@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="760" viewBox="0 0 1200 760">
+<rect width="1200" height="760" fill="white"/>
+<style>
+.t{font-family:Arial,sans-serif;fill:#111}.s{font-family:Arial,sans-serif;fill:#555}.p{fill:#fff;stroke:#111;stroke-width:4}.ui{fill:#f5f5f5;stroke:#bbb;stroke-width:2}.d{fill:#111}.w{fill:white}
+</style>
+<text x="600" y="56" text-anchor="middle" class="t" font-size="34" font-weight="700">iPhone — تثبيت سريع</text>
+
+<rect x="55" y="95" width="320" height="575" rx="38" class="p"/>
+<text x="215" y="140" text-anchor="middle" class="t" font-size="24" font-weight="700">1</text>
+<rect x="90" y="170" width="250" height="58" rx="14" class="d"/>
+<text x="215" y="206" text-anchor="middle" class="w" font-family="Arial" font-size="18">نسخ كود iPhone</text>
+<text x="215" y="275" text-anchor="middle" class="t" font-size="19">افتح صفحة الأداة</text>
+<text x="215" y="310" text-anchor="middle" class="s" font-size="16">واضغط نسخ الكود</text>
+
+<rect x="440" y="95" width="320" height="575" rx="38" class="p"/>
+<text x="600" y="140" text-anchor="middle" class="t" font-size="24" font-weight="700">2</text>
+<rect x="475" y="175" width="250" height="52" rx="13" class="ui"/>
+<text x="600" y="207" text-anchor="middle" class="t" font-size="17">Safari → إضافة إشارة مرجعية</text>
+<rect x="475" y="255" width="250" height="118" rx="16" class="ui"/>
+<text x="600" y="300" text-anchor="middle" class="t" font-size="18">عدّل الإشارة</text>
+<text x="600" y="333" text-anchor="middle" class="s" font-size="15">الاسم: بحث التدريب</text>
+<rect x="475" y="405" width="250" height="88" rx="14" class="d"/>
+<text x="600" y="440" text-anchor="middle" class="w" font-family="Arial" font-size="15">javascript:...</text>
+<text x="600" y="470" text-anchor="middle" class="w" font-family="Arial" font-size="13">الصق الكود مكان الرابط</text>
+
+<rect x="825" y="95" width="320" height="575" rx="38" class="p"/>
+<text x="985" y="140" text-anchor="middle" class="t" font-size="24" font-weight="700">3</text>
+<rect x="860" y="175" width="250" height="52" rx="13" class="ui"/>
+<text x="985" y="207" text-anchor="middle" class="t" font-size="17">افتح صفحة التدريب</text>
+<rect x="860" y="260" width="250" height="150" rx="16" class="ui"/>
+<text x="985" y="307" text-anchor="middle" class="t" font-size="18">افتح الإشارات المرجعية</text>
+<text x="985" y="342" text-anchor="middle" class="s" font-size="16">واضغط: بحث التدريب</text>
+<rect x="860" y="445" width="250" height="60" rx="14" class="d"/>
+<text x="985" y="482" text-anchor="middle" class="w" font-family="Arial" font-size="17">تظهر أداة البحث</text>
+
+<text x="600" y="720" text-anchor="middle" class="s" font-size="16">إذا لم يعمل الـ Bookmarklet، استخدم طريقة Apple Shortcuts الموجودة أسفل صفحة التثبيت.</text>
+</svg>
