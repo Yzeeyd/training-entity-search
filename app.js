@@ -1,7 +1,7 @@
 (() => {
   "use strict";
 
-  const VERSION = "5.1.0";
+  const VERSION = "5.2.0";
   const FRAME_ID = "training-entity-search-v5-frame";
   const STORAGE_KEY = "trainingEntitySearchV5";
   const PAGE_URL = "https://yzeeyd.github.io/training-entity-search/";

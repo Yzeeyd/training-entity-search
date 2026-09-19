@@ -6,162 +6,143 @@
 <meta name="color-scheme" content="light dark">
 <title>بحث جهة التدريب</title>
 <style>
-:root{--bg:#fff;--fg:#0a0a0a;--soft:#f5f5f5;--soft2:#ededed;--line:#d8d8d8;--muted:#666}
-@media(prefers-color-scheme:dark){:root{--bg:#0a0a0a;--fg:#fff;--soft:#171717;--soft2:#222;--line:#333;--muted:#aaa}}
-*{box-sizing:border-box}
-html{scroll-behavior:smooth}
+:root{--bg:#fff;--fg:#0a0a0a;--soft:#f5f5f5;--line:#d8d8d8;--muted:#666}
+@media(prefers-color-scheme:dark){:root{--bg:#0a0a0a;--fg:#fff;--soft:#171717;--line:#333;--muted:#aaa}}
+*{box-sizing:border-box} html{scroll-behavior:smooth}
 body{margin:0;background:var(--bg);color:var(--fg);font-family:Arial,sans-serif;line-height:1.75}
-button,a,input{font:inherit}
-.wrap{max-width:1060px;margin:auto;padding:38px 20px 80px}
+button,a{font:inherit}
+.wrap{max-width:1060px;margin:auto;padding:36px 20px 80px}
 .hero{padding:26px 0 34px;border-bottom:1px solid var(--line)}
 .badge{display:inline-block;padding:5px 10px;border:1px solid var(--fg);border-radius:999px;font-size:12px}
-h1{font-size:48px;line-height:1.12;margin:14px 0 10px}
-h2{font-size:28px;margin-top:44px}
-h3{margin-bottom:5px}
+h1{font-size:48px;line-height:1.12;margin:14px 0 10px} h2{font-size:28px;margin-top:44px} h3{margin-bottom:5px}
 p{color:var(--muted)}
-.primary,.secondary{display:inline-flex;align-items:center;justify-content:center;gap:8px;text-decoration:none;border-radius:12px;padding:14px 20px;font-weight:800;cursor:pointer}
-.primary{background:var(--fg);color:var(--bg);border:1px solid var(--fg)}
-.secondary{background:var(--bg);color:var(--fg);border:1px solid var(--line)}
+.primary,.secondary{display:inline-flex;align-items:center;justify-content:center;text-decoration:none;border-radius:12px;padding:14px 20px;font-weight:800;cursor:pointer}
+.primary{background:var(--fg);color:var(--bg);border:1px solid var(--fg)} .secondary{background:var(--bg);color:var(--fg);border:1px solid var(--line)}
 .actions{display:flex;gap:10px;flex-wrap:wrap;margin:14px 0}
 .note{background:var(--soft);border:1px solid var(--line);padding:16px;border-radius:14px;margin-top:12px}
-.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:18px}
-.card{border:1px solid var(--line);border-radius:16px;padding:18px}
 .steps{counter-reset:step;display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
-.step{border:1px solid var(--line);border-radius:14px;padding:16px}
-.step:before{counter-increment:step;content:counter(step);display:inline-grid;place-items:center;width:30px;height:30px;border-radius:50%;background:var(--fg);color:var(--bg);font-weight:800}
-img{width:100%;height:auto;border:1px solid var(--line);border-radius:14px;background:white}
+.step{border:1px solid var(--line);border-radius:14px;padding:16px} .step:before{counter-increment:step;content:counter(step);display:inline-grid;place-items:center;width:30px;height:30px;border-radius:50%;background:var(--fg);color:var(--bg);font-weight:800}
+.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:16px} .card{border:1px solid var(--line);border-radius:16px;padding:18px}
+.hidden{display:none!important} img{width:100%;height:auto;border:1px solid var(--line);border-radius:14px;background:white}
 code{background:var(--soft);padding:2px 6px;border-radius:6px;word-break:break-word}
-.small{font-size:13px}
-.hidden{display:none!important}
-.mode-pill{display:inline-flex;align-items:center;gap:7px;padding:6px 10px;border-radius:999px;background:var(--soft);border:1px solid var(--line);font-size:12px;color:var(--muted);margin-top:8px}
-.copybox{display:grid;grid-template-columns:1fr auto;gap:8px;margin-top:10px}
-.copybox input{min-width:0;background:var(--soft);color:var(--fg);border:1px solid var(--line);border-radius:10px;padding:11px 12px;font-family:monospace;font-size:12px}
-.toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:var(--fg);color:var(--bg);padding:10px 14px;border-radius:10px;box-shadow:0 8px 28px rgba(0,0,0,.28);z-index:99}
-.footer{border-top:1px solid var(--line);margin-top:48px;padding-top:20px;color:var(--muted);font-size:13px}
-@media(max-width:760px){
-  .wrap{padding:24px 14px 60px}
-  h1{font-size:36px}
-  .grid,.steps{grid-template-columns:1fr}
-  .actions{display:grid;grid-template-columns:1fr}
-  .primary,.secondary{width:100%}
-}
+.pill{display:inline-flex;margin-top:8px;padding:6px 10px;border-radius:999px;background:var(--soft);border:1px solid var(--line);font-size:12px;color:var(--muted)}
+.toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:var(--fg);color:var(--bg);padding:10px 14px;border-radius:10px;z-index:99}
+.small{font-size:13px} .footer{border-top:1px solid var(--line);margin-top:48px;padding-top:20px;color:var(--muted);font-size:13px}
+@media(max-width:760px){.wrap{padding:24px 14px 60px}h1{font-size:36px}.steps,.grid{grid-template-columns:1fr}.actions{display:grid;grid-template-columns:1fr}.primary,.secondary{width:100%}}
 </style>
 </head>
 <body>
 <main class="wrap">
 <section class="hero">
-  <span class="badge">V5.1 · GitHub Pages</span>
-  <h1>بحث جهة التدريب</h1>
-  <p>أداة بحث سريعة داخل قائمة جهات التدريب، مع المفضلة، آخر الاستخدامات، تصنيفات، وبحث عربي متسامح.</p>
-  <div id="modePill" class="mode-pill">جارٍ تحديد جهازك…</div>
+<span class="badge">V5.2 · iPhone + Android + Desktop</span>
+<h1>بحث جهة التدريب</h1>
+<p>نفس الأداة، لكن صفحة التثبيت تعرض الطريقة المناسبة تلقائيًا حسب جهاز الطالب.</p>
+<div id="device" class="pill">جارٍ تحديد الجهاز…</div>
 
-  <div id="desktopHero" class="hidden">
-    <div class="actions">
-      <a class="primary" href="javascript:(()=&gt;{const open=()=&gt;window.TrainingEntitySearchV5&amp;&amp;window.TrainingEntitySearchV5.open();if(open())return;const old=document.getElementById(&#x27;tes-v5-loader&#x27;);if(old)old.remove();const s=document.createElement(&#x27;script&#x27;);s.id=&#x27;tes-v5-loader&#x27;;s.src=&#x27;https://yzeeyd.github.io/training-entity-search/app.js?t=&#x27;+Date.now();s.onload=()=&gt;{if(window.TrainingEntitySearchV5)window.TrainingEntitySearchV5.open();else alert(&#x27;تعذر تشغيل أداة بحث جهة التدريب.&#x27;)};s.onerror=()=&gt;alert(&#x27;الموقع منع تحميل الأداة. جرّب النسخة المستقلة من صفحة الأداة.&#x27;);document.documentElement.appendChild(s)})();">🔍 اسحب هذا الزر إلى شريط المفضلة</a>
-    </div>
-    <div class="note"><b>على الكمبيوتر:</b> اسحب الزر إلى شريط المفضلة مرة واحدة فقط، وبعدها شغّله وأنت داخل صفحة اختيار جهة التدريب.</div>
-  </div>
+<div id="desktopHero" class="hidden">
+  <div class="actions"><a class="primary" href="javascript:(()=&gt;{let s=document.createElement(&#x27;script&#x27;);s.src=&#x27;https://yzeeyd.github.io/training-entity-search/app.js?t=&#x27;+Date.now();s.onload=()=&gt;window.TrainingEntitySearchV5?.open();s.onerror=()=&gt;alert(&#x27;تعذر تحميل الأداة&#x27;);document.documentElement.appendChild(s)})();">🔍 اسحب إلى شريط المفضلة</a></div>
+  <div class="note"><b>كمبيوتر:</b> اسحب الزر إلى شريط المفضلة، ثم شغله داخل صفحة اختيار جهة التدريب.</div>
+</div>
 
-  <div id="mobileHero" class="hidden">
-    <div class="actions">
-      <button class="primary" id="copyQuick">نسخ كود الأداة للجوال</button>
-      <button class="secondary" id="copyStandalone">نسخ النسخة المستقلة</button>
-    </div>
-    <div class="note">
-      <b>على الجوال:</b> المتصفح لا يسمح للموقع بإضافة Bookmark تلقائيًا. لذلك نسهّلها إلى: 
-      <b>انسخ الكود → احفظ الصفحة كمفضلة → عدّل رابط المفضلة والصق الكود.</b>
-      <br><span class="small">ابدأ بـ «كود الأداة للجوال». استخدم «النسخة المستقلة» فقط إذا منع موقع الجامعة تحميل الأداة.</span>
-    </div>
+<div id="androidHero" class="hidden">
+  <div class="actions"><button class="primary copyQuick">نسخ كود Android</button></div>
+  <div class="note"><b>Android:</b> احفظ Bookmark باسم <b>بحث التدريب</b> واستبدل رابطه بالكود المنسوخ. الكود قصير جدًا وأقل بكثير من 2048 حرف.</div>
+</div>
+
+<div id="iphoneHero" class="hidden">
+  <div class="actions">
+    <button class="primary copyQuick">نسخ كود iPhone</button>
+    <button class="secondary" id="copyIOSShortcut">نسخ كود Apple Shortcuts</button>
   </div>
+  <div class="note">
+    <b>iPhone:</b> الطريقة السريعة Bookmarklet قصير مثل Android. وإذا Safari/Brave رفض تشغيله، عندك طريقة احتياطية رسمية عبر تطبيق <b>Shortcuts</b> في Safari.
+  </div>
+</div>
 </section>
 
 <section id="desktopInstall" class="hidden">
 <h2>تثبيت الكمبيوتر</h2>
 <div class="steps">
-  <div class="step"><h3>أظهر شريط المفضلة</h3><p>في Brave اضغط <code>Ctrl + Shift + B</code>.</p></div>
-  <div class="step"><h3>اسحب الزر</h3><p>اسحب زر <b>بحث جهة التدريب</b> من أعلى الصفحة إلى شريط المفضلة.</p></div>
-  <div class="step"><h3>شغّل الأداة</h3><p>ادخل صفحة التدريب في موقع الجامعة واضغط المفضلة.</p></div>
+<div class="step"><h3>أظهر شريط المفضلة</h3><p><code>Ctrl + Shift + B</code></p></div>
+<div class="step"><h3>اسحب الزر</h3><p>اسحب زر الأداة من أعلى الصفحة إلى شريط المفضلة.</p></div>
+<div class="step"><h3>شغله</h3><p>افتح صفحة التدريب واضغط المفضلة.</p></div>
 </div>
-<p><img src="assets/install.svg" alt="رسم توضيحي لتثبيت الأداة على الكمبيوتر"></p>
+<img src="assets/install.svg" alt="شرح الكمبيوتر">
 </section>
 
-<section id="mobileInstall" class="hidden">
-<h2>تثبيت الجوال</h2>
+<section id="androidInstall" class="hidden">
+<h2>تثبيت Android</h2>
 <div class="steps">
-  <div class="step"><h3>انسخ الكود</h3><p>اضغط زر <b>نسخ كود الأداة للجوال</b> الموجود أعلى الصفحة.</p></div>
-  <div class="step"><h3>أنشئ مفضلة</h3><p>احفظ هذه الصفحة في المفضلة، ثم افتح إدارة المفضلة وعدّلها. غيّر الاسم إلى <b>بحث التدريب</b>، واستبدل الرابط بالكود المنسوخ.</p></div>
-  <div class="step"><h3>شغّلها في صفحة الجامعة</h3><p>افتح صفحة اختيار جهة التدريب. من المفضلة أو شريط العنوان ابحث عن <b>بحث التدريب</b> وشغّلها.</p></div>
+<div class="step"><h3>انسخ الكود</h3><p>اضغط <b>نسخ كود Android</b>.</p></div>
+<div class="step"><h3>أنشئ Bookmark</h3><p>سمّه <b>بحث التدريب</b> واستبدل الرابط بالكود.</p></div>
+<div class="step"><h3>شغله</h3><p>وأنت داخل صفحة الجامعة افتح الـBookmark.</p></div>
 </div>
-<p><img src="assets/mobile-install.svg" alt="رسم توضيحي لتثبيت الأداة على الجوال"></p>
-<div class="note small">
-<b>ملاحظة:</b> واجهة Brave/Chrome قد تختلف قليلًا بين Android وiPhone وبين الإصدارات. الفكرة ثابتة: المفضلة يجب أن يكون رابطها هو الكود الذي يبدأ بـ <code>javascript:</code>.
-</div>
+<img src="assets/mobile-install.svg" alt="شرح Android">
 </section>
 
-<section>
-<h2>الاستخدام</h2>
+<section id="iphoneInstall" class="hidden">
+<h2>تثبيت iPhone — الطريقة السريعة</h2>
+<div class="steps">
+<div class="step"><h3>انسخ الكود</h3><p>اضغط <b>نسخ كود iPhone</b>.</p></div>
+<div class="step"><h3>احفظ Bookmark</h3><p>في Safari احفظ الصفحة كإشارة مرجعية، ثم عدّلها. الاسم <b>بحث التدريب</b> والرابط هو الكود المنسوخ.</p></div>
+<div class="step"><h3>شغله</h3><p>افتح صفحة التدريب، ثم افتح الإشارات المرجعية واضغط <b>بحث التدريب</b>.</p></div>
+</div>
+<img src="assets/iphone-install.svg" alt="شرح iPhone">
+
+<h2>iPhone — طريقة Apple Shortcuts الاحتياطية</h2>
 <div class="grid">
-  <div class="card"><h3>ابحث بأي جزء من الاسم</h3><p>اكتب <b>بنك</b> لعرض البنوك والمصارف، أو كلمات مثل <b>وزارة</b>، <b>سدايا</b>، <b>مستشفى</b>.</p></div>
-  <div class="card"><h3>تصنيفات سريعة</h3><p>بنوك، تقنية، حكومي، صحي، اتصالات. ويمكن الجمع بين التصنيف وكلمة البحث.</p></div>
-  <div class="card"><h3>⭐ المفضلة والأخيرة</h3><p>ثبت الجهات المهمة بالنجمة، والجهات التي استخدمتها مؤخرًا تظهر في الأعلى.</p></div>
-  <div class="card"><h3>خصوصية</h3><p>المفضلة وسجل الاستخدام محفوظان محليًا في متصفح الطالب فقط.</p></div>
+<div class="card"><h3>1. أنشئ Shortcut</h3><p>افتح تطبيق <b>Shortcuts</b> وأضف الإجراء <b>Run JavaScript on Webpage</b>.</p></div>
+<div class="card"><h3>2. الصق الكود</h3><p>اضغط زر <b>نسخ كود Apple Shortcuts</b> أعلى الصفحة والصقه داخل الإجراء.</p></div>
+<div class="card"><h3>3. فعّل Share Sheet</h3><p>من تفاصيل الاختصار فعّل <b>Show in Share Sheet</b> واجعله يستقبل Safari webpages.</p></div>
+<div class="card"><h3>4. التشغيل</h3><p>داخل صفحة الجامعة في Safari: مشاركة → اختر الاختصار.</p></div>
 </div>
-<p><img src="assets/usage.svg" alt="رسم توضيحي لاستخدام أداة البحث"></p>
+<div class="note small">هذه الطريقة تعتمد على ميزة رسمية من Apple لتشغيل JavaScript على صفحة Safari الحالية.</div>
 </section>
 
 <section>
-<h2>إذا لم تعمل على موقع الجامعة</h2>
-<p>قد يمنع الموقع تحميل <code>app.js</code> الخارجي بسبب إعدادات الحماية. وقتها ارجع لهذه الصفحة وانسخ <b>النسخة المستقلة</b> ثم ضعها مكان رابط المفضلة.</p>
+<h2>الاستخدام بعد التثبيت</h2>
+<div class="grid">
+<div class="card"><h3>بحث مرن</h3><p>اكتب بنك، وزارة، سدايا، مستشفى، أو جزءًا من اسم الجهة.</p></div>
+<div class="card"><h3>المفضلة والأخيرة</h3><p>⭐ ثبت الجهات المهمة، والجهات المستخدمة مؤخرًا تظهر أولًا.</p></div>
+<div class="card"><h3>تصنيفات</h3><p>بنوك، تقنية، حكومي، صحي، اتصالات.</p></div>
+<div class="card"><h3>خصوصية</h3><p>سجل الاستخدام يبقى على جهاز الطالب فقط.</p></div>
+</div>
+<img src="assets/usage.svg" alt="شرح الاستخدام">
 </section>
 
-<div class="footer">
-الأداة تبحث فقط داخل الخيارات التي يعرضها موقع الجامعة أصلًا، ولا تضيف جهات جديدة ولا ترسل اختيارات الطالب إلى Backend.
-</div>
+<div class="footer">الأداة تبحث فقط داخل الخيارات الموجودة أصلًا في صفحة الجامعة.</div>
 </main>
 
 <script>
-const QUICK = "javascript:(()=>{const open=()=>window.TrainingEntitySearchV5&&window.TrainingEntitySearchV5.open();if(open())return;const old=document.getElementById('tes-v5-loader');if(old)old.remove();const s=document.createElement('script');s.id='tes-v5-loader';s.src='https://yzeeyd.github.io/training-entity-search/app.js?t='+Date.now();s.onload=()=>{if(window.TrainingEntitySearchV5)window.TrainingEntitySearchV5.open();else alert('تعذر تشغيل أداة بحث جهة التدريب.')};s.onerror=()=>alert('الموقع منع تحميل الأداة. جرّب النسخة المستقلة من صفحة الأداة.');document.documentElement.appendChild(s)})();";
-const STANDALONE = "javascript:(()=>{(() => {\n  \"use strict\";\n\n  const VERSION = \"5.1.0\";\n  const FRAME_ID = \"training-entity-search-v5-frame\";\n  const STORAGE_KEY = \"trainingEntitySearchV5\";\n  const PAGE_URL = \"https://yzeeyd.github.io/training-entity-search/\";\n\n  if (window.TrainingEntitySearchV5?.version === VERSION) return;\n\n  const normalize = (value = \"\") =>\n    String(value)\n      .normalize(\"NFD\")\n      .replace(/[\\u064B-\\u065F\\u0670\\u0640]/g, \"\")\n      .replace(/[أإآٱ]/g, \"ا\")\n      .replace(/ى/g, \"ي\")\n      .replace(/ة/g, \"ه\")\n      .replace(/ؤ/g, \"و\")\n      .replace(/ئ/g, \"ي\")\n      .replace(/[\\u200e\\u200f\\u061c]/g, \"\")\n      .replace(/\\u00a0/g, \" \")\n      .replace(/[^\\p{L}\\p{N}\\s]/gu, \" \")\n      .replace(/\\s+/g, \" \")\n      .trim()\n      .toLowerCase();\n\n  const aliases = {\n    \"بنك\": [\"بنك\", \"مصرف\"],\n    \"مصرف\": [\"مصرف\", \"بنك\"],\n    \"اس تي سي\": [\"stc\", \"اس تي سي\", \"الاتصالات السعوديه\"],\n    \"stc\": [\"stc\", \"اس تي سي\", \"الاتصالات السعوديه\"],\n    \"سايبر\": [\"سايبر\", \"امن سيبراني\", \"الامن السيبراني\"],\n  };\n\n  const categories = [\n    {\n      id: \"banks\",\n      label: \"بنوك\",\n      terms: [\"بنك\", \"مصرف\"],\n    },\n    {\n      id: \"tech\",\n      label: \"تقنية\",\n      terms: [\"تقنيه\", \"تقنية\", \"ذكاء\", \"بيانات\", \"رقمي\", \"برمج\", \"نظم\", \"معلومات\", \"سايبر\", \"امن سيبراني\", \"اتصالات\"],\n    },\n    {\n      id: \"gov\",\n      label: \"حكومي\",\n      terms: [\"وزاره\", \"وزارة\", \"هيئه\", \"هيئة\", \"امانه\", \"أمانة\", \"بلديه\", \"بلدية\", \"ديوان\", \"جامعه\", \"جامعة\", \"صندوق\", \"اداره\", \"إدارة\"],\n    },\n    {\n      id: \"health\",\n      label: \"صحي\",\n      terms: [\"مستشفى\", \"صحه\", \"صحة\", \"صحي\", \"طبي\", \"طبيه\", \"طبية\", \"رعايه\", \"رعاية\", \"دواء\"],\n    },\n    {\n      id: \"telecom\",\n      label: \"اتصالات\",\n      terms: [\"اتصالات\", \"stc\", \"موبايلي\", \"زين\", \"هواوي\", \"نوكيا\", \"سلام\"],\n    },\n  ];\n\n  const readState = () => {\n    try {\n      const parsed = JSON.parse(localStorage.getItem(STORAGE_KEY) || \"{}\");\n      return {\n        usage: parsed.usage || {},\n        favorites: parsed.favorites || {},\n        recent: Array.isArray(parsed.recent) ? parsed.recent : [],\n      };\n    } catch {\n      return { usage: {}, favorites: {}, recent: [] };\n    }\n  };\n\n  const writeState = (state) => {\n    try {\n      localStorage.setItem(STORAGE_KEY, JSON.stringify(state));\n    } catch {}\n  };\n\n  const optionName = (el) =>\n    (el.getAttribute(\"aria-label\") || el.textContent || \"\")\n      .replace(/\\s+/g, \" \")\n      .trim();\n\n  const findTrainingMultiselect = () => {\n    const candidates = [...document.querySelectorAll(\".multiselect\")]\n      .map((el) => ({\n        el,\n        options: [...el.querySelectorAll('.multiselect-option,[role=\"option\"]')],\n      }))\n      .filter((x) => x.options.length > 0);\n\n    if (!candidates.length) return null;\n\n    const contextText = (el) => {\n      let current = el;\n      let text = \"\";\n      for (let i = 0; i < 4 && current; i++, current = current.parentElement) {\n        text += \" \" + (current.innerText || \"\");\n      }\n      return normalize(text).slice(0, 4000);\n    };\n\n    const scored = candidates.map((c) => {\n      const text = contextText(c.el);\n      let score = 0;\n      if (text.includes(\"جهه التدريب\") || text.includes(\"جهة التدريب\")) score += 500;\n      if (text.includes(\"التدريب\")) score += 120;\n      if (text.includes(\"جهه\") || text.includes(\"جهة\")) score += 80;\n      if (c.options.length >= 100) score += 30;\n      score += Math.min(c.options.length / 10, 50);\n      return { ...c, score };\n    });\n\n    scored.sort((a, b) => b.score - a.score);\n    return scored[0];\n  };\n\n  const levenshtein = (a, b) => {\n    if (a === b) return 0;\n    if (!a.length) return b.length;\n    if (!b.length) return a.length;\n\n    const prev = Array.from({ length: b.length + 1 }, (_, i) => i);\n    const curr = new Array(b.length + 1);\n\n    for (let i = 1; i <= a.length; i++) {\n      curr[0] = i;\n      for (let j = 1; j <= b.length; j++) {\n        curr[j] = Math.min(\n          curr[j - 1] + 1,\n          prev[j] + 1,\n          prev[j - 1] + (a[i - 1] === b[j - 1] ? 0 : 1)\n        );\n      }\n      for (let j = 0; j <= b.length; j++) prev[j] = curr[j];\n    }\n    return prev[b.length];\n  };\n\n  const fuzzyTokenMatch = (queryToken, candidateToken) => {\n    if (!queryToken || !candidateToken) return false;\n    if (candidateToken.includes(queryToken) || queryToken.includes(candidateToken)) return true;\n\n    const limit =\n      queryToken.length <= 4 ? 1 :\n      queryToken.length <= 8 ? 2 : 3;\n\n    if (Math.abs(queryToken.length - candidateToken.length) > limit) return false;\n    return levenshtein(queryToken, candidateToken) <= limit;\n  };\n\n  const queryGroups = (query) =>\n    normalize(query)\n      .split(\" \")\n      .filter(Boolean)\n      .map((token) => aliases[token] || [token]);\n\n  const matchQuery = (name, query) => {\n    if (!query.trim()) return true;\n\n    const normalizedName = normalize(name);\n    const nameTokens = normalizedName.split(\" \").filter(Boolean);\n\n    return queryGroups(query).every((group) =>\n      group.some((queryToken) =>\n        normalizedName.includes(queryToken) ||\n        nameTokens.some((candidateToken) => fuzzyTokenMatch(queryToken, candidateToken))\n      )\n    );\n  };\n\n  const categoryMatch = (name, categoryId) => {\n    if (!categoryId) return true;\n    const category = categories.find((c) => c.id === categoryId);\n    if (!category) return true;\n    const n = normalize(name);\n    return category.terms.some((term) => n.includes(normalize(term)));\n  };\n\n  const scoreName = (name, query, state) => {\n    const n = normalize(name);\n    const q = normalize(query);\n    let score = 0;\n\n    if (q) {\n      if (n === q) score += 1000;\n      if (n.startsWith(q)) score += 350;\n      if (n.includes(q)) score += 180;\n\n      for (const group of queryGroups(query)) {\n        if (group.some((t) => n.startsWith(t))) score += 60;\n        if (group.some((t) => n.includes(t))) score += 25;\n      }\n    }\n\n    const usage = state.usage[name];\n    if (usage) score += Math.min((usage.count || 0) * 4, 100);\n\n    if (state.favorites[name]) score += 130;\n\n    return score;\n  };\n\n  const uniqueOptions = (options) => {\n    const seen = new Map();\n\n    for (const el of options) {\n      const name = optionName(el);\n      if (!name) continue;\n\n      const key = normalize(name);\n      if (!key) continue;\n\n      if (!seen.has(key)) seen.set(key, { name, el });\n    }\n\n    return [...seen.values()];\n  };\n\n  const open = () => {\n    const existing = document.getElementById(FRAME_ID);\n    if (existing) {\n      existing.remove();\n      return true;\n    }\n\n    const found = findTrainingMultiselect();\n    if (!found) {\n      alert(\"تعذر العثور على قائمة جهة التدريب في هذه الصفحة.\\n\\nتأكد أنك داخل صفحة اختيار جهة التدريب ثم شغّل الأداة مرة أخرى.\");\n      return false;\n    }\n\n    const allOptions = uniqueOptions(found.options);\n    const state = readState();\n\n    const frame = document.createElement(\"iframe\");\n    frame.id = FRAME_ID;\n    frame.title = \"بحث جهة التدريب\";\n    frame.style.cssText =\n      \"position:fixed;inset:0;width:100vw;height:100vh;border:0;z-index:2147483647;background:transparent;\";\n    document.documentElement.appendChild(frame);\n\n    const d = frame.contentDocument;\n    d.open();\n    d.write(`<!doctype html>\n<html lang=\"ar\" dir=\"rtl\">\n<head>\n<meta charset=\"utf-8\">\n<meta name=\"viewport\" content=\"width=device-width,initial-scale=1\">\n<style>\n*{box-sizing:border-box}\nhtml,body{margin:0;width:100%;height:100%;font-family:Arial,sans-serif}\nbody{\n  --bg:#fff;--fg:#0a0a0a;--soft:#f5f5f5;--soft2:#ececec;--line:#d8d8d8;--muted:#6b6b6b;\n  background:rgba(0,0,0,.45);display:flex;align-items:flex-start;justify-content:center;padding:18px;color:var(--fg)\n}\n@media(prefers-color-scheme:dark){\n  body{--bg:#0c0c0c;--fg:#fff;--soft:#171717;--soft2:#222;--line:#333;--muted:#aaa;background:rgba(0,0,0,.7)}\n}\nbutton,input{font:inherit}\n.card{\n  width:min(820px,96vw);max-height:94vh;background:var(--bg);border:1px solid var(--line);border-radius:20px;\n  box-shadow:0 24px 80px rgba(0,0,0,.35);padding:18px;display:flex;flex-direction:column\n}\n.header{display:flex;align-items:center;justify-content:space-between;gap:16px;margin-bottom:12px}\n.title{font-size:20px;font-weight:900}.sub{font-size:12px;color:var(--muted);margin-top:2px}\n.version{font-size:11px;border:1px solid var(--line);padding:3px 7px;border-radius:999px;color:var(--muted)}\n.close{width:46px;height:46px;border:1px solid var(--line);border-radius:12px;background:var(--soft);color:var(--fg);font-size:24px;cursor:pointer}\n.search{display:flex;gap:8px}\n.q{width:100%;padding:14px 16px;border:1px solid var(--line);border-radius:12px;background:var(--bg);color:var(--fg);font-size:18px;outline:none}\n.q:focus{border-color:var(--fg)}\n.chips{display:flex;gap:7px;flex-wrap:wrap;margin:11px 0 6px}\n.chip{border:1px solid var(--line);background:var(--soft);color:var(--fg);border-radius:999px;padding:7px 11px;cursor:pointer;font-size:13px}\n.chip.active{background:var(--fg);color:var(--bg);border-color:var(--fg)}\n.meta{display:flex;justify-content:space-between;gap:12px;color:var(--muted);font-size:12px;padding:6px 2px}\n.results{overflow:auto;max-height:58vh;padding-left:2px}\n.row{display:grid;grid-template-columns:42px 1fr 42px;gap:7px;align-items:stretch;margin:6px 0}\n.item,.icon{border:1px solid var(--line);background:var(--soft);color:var(--fg);border-radius:11px;cursor:pointer}\n.item{text-align:right;padding:12px 13px;font-size:15px}\n.item:hover,.item:focus{background:var(--fg);color:var(--bg);outline:none}\n.icon{font-size:18px;display:flex;align-items:center;justify-content:center}\n.icon:hover{background:var(--soft2)}\n.empty{text-align:center;padding:30px 12px;color:var(--muted)}\n.section-title{font-size:12px;color:var(--muted);font-weight:700;margin:10px 2px 4px}\n.footer{display:flex;justify-content:space-between;gap:10px;align-items:center;border-top:1px solid var(--line);padding-top:10px;margin-top:8px;font-size:11px;color:var(--muted)}\n.link,.reset{border:0;background:none;color:var(--muted);text-decoration:underline;cursor:pointer;padding:0}\n.toast{position:fixed;bottom:22px;left:50%;transform:translateX(-50%);background:var(--fg);color:var(--bg);padding:10px 14px;border-radius:10px;font-size:13px;box-shadow:0 8px 30px rgba(0,0,0,.3)}\n@media(max-width:600px){\n  body{padding:8px}.card{padding:12px;border-radius:16px}.title{font-size:18px}.q{font-size:16px}.row{grid-template-columns:38px 1fr 38px}\n}\n</style>\n</head>\n<body>\n<div class=\"card\">\n  <div class=\"header\">\n    <div>\n      <div style=\"display:flex;gap:8px;align-items:center\"><span class=\"title\">بحث جهة التدريب</span><span class=\"version\">v${VERSION}</span></div>\n      <div class=\"sub\">ابحث ثم اختر الجهة مباشرة من القائمة الأصلية</div>\n    </div>\n    <button class=\"close\" id=\"close\" aria-label=\"إغلاق\">×</button>\n  </div>\n\n  <div class=\"search\"><input id=\"q\" class=\"q\" placeholder=\"مثال: بنك، سدايا، وزارة، مستشفى...\" autocomplete=\"off\"></div>\n\n  <div class=\"chips\" id=\"chips\"></div>\n  <div class=\"meta\"><span id=\"count\"></span><span id=\"hint\"></span></div>\n  <div class=\"results\" id=\"results\"></div>\n\n  <div class=\"footer\">\n    <span>⭐ المفضلة و\"الأخيرة\" محفوظة على جهازك فقط.</span>\n    <span><button id=\"reset\" class=\"reset\">مسح بيانات الأداة</button> · <a class=\"link\" href=\"${PAGE_URL}\" target=\"_blank\">المساعدة</a></span>\n  </div>\n</div>\n</body>\n</html>`);\n    d.close();\n\n    const q = d.getElementById(\"q\");\n    const results = d.getElementById(\"results\");\n    const count = d.getElementById(\"count\");\n    const hint = d.getElementById(\"hint\");\n    const chips = d.getElementById(\"chips\");\n\n    let activeCategory = \"\";\n    let itemButtons = [];\n    let keyboardIndex = -1;\n\n    const toast = (text) => {\n      const t = d.createElement(\"div\");\n      t.className = \"toast\";\n      t.textContent = text;\n      d.body.appendChild(t);\n      setTimeout(() => t.remove(), 1300);\n    };\n\n    const currentRows = () => {\n      const query = q.value.trim();\n\n      return allOptions\n        .filter((x) => matchQuery(x.name, query))\n        .filter((x) => categoryMatch(x.name, activeCategory))\n        .map((x) => ({\n          ...x,\n          score: scoreName(x.name, query, state),\n          favorite: !!state.favorites[x.name],\n          recentIndex: state.recent.indexOf(x.name),\n        }))\n        .sort((a, b) => {\n          if (query) return b.score - a.score || a.name.localeCompare(b.name, \"ar\");\n          if (a.favorite !== b.favorite) return Number(b.favorite) - Number(a.favorite);\n          if (a.recentIndex !== b.recentIndex) {\n            if (a.recentIndex < 0) return 1;\n            if (b.recentIndex < 0) return -1;\n            return a.recentIndex - b.recentIndex;\n          }\n          const au = state.usage[a.name]?.count || 0;\n          const bu = state.usage[b.name]?.count || 0;\n          return bu - au || a.name.localeCompare(b.name, \"ar\");\n        });\n    };\n\n    const selectOption = (row) => {\n      state.usage[row.name] = {\n        count: (state.usage[row.name]?.count || 0) + 1,\n        last: Date.now(),\n      };\n      state.recent = [row.name, ...state.recent.filter((x) => x !== row.name)].slice(0, 8);\n      writeState(state);\n\n      frame.remove();\n\n      const wrapper = found.el.querySelector(\".multiselect-wrapper,[role='combobox']\");\n      if (wrapper && wrapper.getAttribute(\"aria-expanded\") !== \"true\") wrapper.click();\n\n      setTimeout(() => {\n        row.el.scrollIntoView({ block: \"center\" });\n        row.el.click();\n      }, 120);\n    };\n\n    const addRow = (row, parent) => {\n      const wrap = d.createElement(\"div\");\n      wrap.className = \"row\";\n\n      const fav = d.createElement(\"button\");\n      fav.className = \"icon\";\n      fav.title = row.favorite ? \"إزالة من المفضلة\" : \"إضافة للمفضلة\";\n      fav.textContent = row.favorite ? \"★\" : \"☆\";\n      fav.onclick = () => {\n        if (state.favorites[row.name]) delete state.favorites[row.name];\n        else state.favorites[row.name] = true;\n        writeState(state);\n        render();\n      };\n\n      const item = d.createElement(\"button\");\n      item.className = \"item\";\n      item.textContent = row.name;\n      item.onclick = () => selectOption(row);\n\n      const copy = d.createElement(\"button\");\n      copy.className = \"icon\";\n      copy.title = \"نسخ اسم الجهة\";\n      copy.textContent = \"⧉\";\n      copy.onclick = async () => {\n        try {\n          await navigator.clipboard.writeText(row.name);\n          toast(\"تم نسخ اسم الجهة\");\n        } catch {\n          toast(\"تعذر النسخ\");\n        }\n      };\n\n      wrap.append(fav, item, copy);\n      parent.appendChild(wrap);\n      itemButtons.push(item);\n    };\n\n    const render = () => {\n      const rows = currentRows();\n      itemButtons = [];\n      keyboardIndex = -1;\n      results.innerHTML = \"\";\n\n      count.textContent = `${rows.length} جهة`;\n      hint.textContent =\n        q.value.trim() || activeCategory\n          ? \"Enter لاختيار أول نتيجة\"\n          : \"المفضلة والأخيرة تظهر أولًا\";\n\n      if (!rows.length) {\n        const empty = d.createElement(\"div\");\n        empty.className = \"empty\";\n        empty.innerHTML = \"لا توجد نتائج<br><span style='font-size:12px'>جرّب كلمة أقصر أو تصنيفًا آخر</span>\";\n        results.appendChild(empty);\n        return;\n      }\n\n      if (!q.value.trim() && !activeCategory) {\n        const favRows = rows.filter((r) => r.favorite);\n        const recentRows = rows.filter((r) => !r.favorite && r.recentIndex >= 0);\n        const restRows = rows.filter((r) => !r.favorite && r.recentIndex < 0);\n\n        const groups = [\n          [\"المفضلة\", favRows],\n          [\"استخدمتها مؤخرًا\", recentRows],\n          [\"كل الجهات\", restRows],\n        ];\n\n        for (const [title, list] of groups) {\n          if (!list.length) continue;\n          const h = d.createElement(\"div\");\n          h.className = \"section-title\";\n          h.textContent = title;\n          results.appendChild(h);\n          list.forEach((row) => addRow(row, results));\n        }\n      } else {\n        rows.forEach((row) => addRow(row, results));\n      }\n    };\n\n    for (const category of categories) {\n      const button = d.createElement(\"button\");\n      button.className = \"chip\";\n      button.textContent = category.label;\n      button.dataset.id = category.id;\n      button.onclick = () => {\n        activeCategory = activeCategory === category.id ? \"\" : category.id;\n        [...chips.children].forEach((el) =>\n          el.classList.toggle(\"active\", el.dataset.id === activeCategory)\n        );\n        render();\n        q.focus();\n      };\n      chips.appendChild(button);\n    }\n\n    q.addEventListener(\"input\", render);\n\n    q.addEventListener(\"keydown\", (event) => {\n      if (event.key === \"Escape\") {\n        frame.remove();\n        return;\n      }\n\n      if (event.key === \"Enter\" && itemButtons.length) {\n        event.preventDefault();\n        itemButtons[0].click();\n        return;\n      }\n\n      if (event.key === \"ArrowDown\" && itemButtons.length) {\n        event.preventDefault();\n        keyboardIndex = 0;\n        itemButtons[0].focus();\n      }\n    });\n\n    results.addEventListener(\"keydown\", (event) => {\n      if (!itemButtons.length) return;\n\n      if (event.key === \"Escape\") {\n        frame.remove();\n        return;\n      }\n\n      const current = itemButtons.indexOf(d.activeElement);\n      if (event.key === \"ArrowDown\") {\n        event.preventDefault();\n        keyboardIndex = current < 0 ? 0 : (current + 1) % itemButtons.length;\n        itemButtons[keyboardIndex].focus();\n      } else if (event.key === \"ArrowUp\") {\n        event.preventDefault();\n        keyboardIndex =\n          current < 0 ? itemButtons.length - 1 : (current - 1 + itemButtons.length) % itemButtons.length;\n        itemButtons[keyboardIndex].focus();\n      }\n    });\n\n    d.getElementById(\"close\").onclick = () => frame.remove();\n\n    d.getElementById(\"reset\").onclick = () => {\n      state.usage = {};\n      state.favorites = {};\n      state.recent = [];\n      writeState(state);\n      render();\n      q.focus();\n      toast(\"تم مسح بيانات الأداة\");\n    };\n\n    d.body.addEventListener(\"click\", (event) => {\n      if (event.target === d.body) frame.remove();\n    });\n\n    render();\n    setTimeout(() => q.focus(), 50);\n\n    return true;\n  };\n\n  window.TrainingEntitySearchV5 = { version: VERSION, open };\n})();\nwindow.TrainingEntitySearchV5.open();})();";
+const QUICK="javascript:(()=>{let s=document.createElement('script');s.src='https://yzeeyd.github.io/training-entity-search/app.js?t='+Date.now();s.onload=()=>window.TrainingEntitySearchV5?.open();s.onerror=()=>alert('تعذر تحميل الأداة');document.documentElement.appendChild(s)})();";
+const IOS_SHORTCUT="var s=document.createElement('script');\ns.src='https://yzeeyd.github.io/training-entity-search/app.js?t='+Date.now();\ns.onload=function(){\n  try {\n    if (window.TrainingEntitySearchV5) {\n      window.TrainingEntitySearchV5.open();\n      completion('تم تشغيل الأداة');\n    } else {\n      completion('تعذر تشغيل الأداة');\n    }\n  } catch (e) {\n    completion('خطأ: '+e.message);\n  }\n};\ns.onerror=function(){\n  completion('تعذر تحميل الأداة');\n};\ndocument.documentElement.appendChild(s);";
 
-const isMobile = () => {
-  const ua = navigator.userAgent || "";
-  return /Android|iPhone|iPad|iPod|Mobile/i.test(ua) || matchMedia("(pointer:coarse)").matches || innerWidth < 760;
-};
+function toast(msg){
+ const t=document.createElement('div');t.className='toast';t.textContent=msg;document.body.appendChild(t);setTimeout(()=>t.remove(),1600);
+}
+async function copyText(text){
+ try{await navigator.clipboard.writeText(text);toast('تم نسخ الكود')}catch(e){
+  const ta=document.createElement('textarea');ta.value=text;document.body.appendChild(ta);ta.select();document.execCommand('copy');ta.remove();toast('تم نسخ الكود');
+ }
+}
 
-const showToast = (text) => {
-  const old = document.querySelector(".toast");
-  if (old) old.remove();
-  const t = document.createElement("div");
-  t.className = "toast";
-  t.textContent = text;
-  document.body.appendChild(t);
-  setTimeout(() => t.remove(), 1700);
-};
+const ua=navigator.userAgent||'';
+const isiPhone=/iPhone|iPad|iPod/i.test(ua);
+const isAndroid=/Android/i.test(ua);
+const isMobile=isiPhone||isAndroid||matchMedia('(pointer:coarse)').matches||innerWidth<760;
 
-const copyText = async (text) => {
-  try {
-    await navigator.clipboard.writeText(text);
-    showToast("تم نسخ الكود");
-  } catch {
-    const ta = document.createElement("textarea");
-    ta.value = text;
-    ta.style.position = "fixed";
-    ta.style.opacity = "0";
-    document.body.appendChild(ta);
-    ta.select();
-    document.execCommand("copy");
-    ta.remove();
-    showToast("تم نسخ الكود");
-  }
-};
+let type='desktop';
+if(isiPhone) type='iphone'; else if(isAndroid||isMobile) type='android';
 
-const mobile = isMobile();
-document.getElementById("modePill").textContent = mobile ? "📱 تم اكتشاف جهاز جوال" : "💻 تم اكتشاف جهاز كمبيوتر";
-document.getElementById(mobile ? "mobileHero" : "desktopHero").classList.remove("hidden");
-document.getElementById(mobile ? "mobileInstall" : "desktopInstall").classList.remove("hidden");
+document.getElementById('device').textContent =
+ type==='iphone'?'🍎 تم اكتشاف iPhone / iPad':
+ type==='android'?'📱 تم اكتشاف Android':'💻 تم اكتشاف كمبيوتر';
 
-document.getElementById("copyQuick")?.addEventListener("click", () => copyText(QUICK));
-document.getElementById("copyStandalone")?.addEventListener("click", () => copyText(STANDALONE));
+document.getElementById(type+'Hero').classList.remove('hidden');
+document.getElementById(type+'Install').classList.remove('hidden');
+
+document.querySelectorAll('.copyQuick').forEach(b=>b.addEventListener('click',()=>copyText(QUICK)));
+document.getElementById('copyIOSShortcut')?.addEventListener('click',()=>copyText(IOS_SHORTCUT));
 </script>
 </body>
 </html>

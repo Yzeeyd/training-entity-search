@@ -1,48 +1,36 @@
-# بحث جهة التدريب — V5.1
+# بحث جهة التدريب — V5.2
 
-أداة Bookmarklet عربية للبحث داخل قائمة **جهة التدريب** في صفحة الجامعة.
+يدعم الآن:
+- Desktop
+- Android
+- iPhone / iPad
 
-## الجديد في V5.1
+## التثبيت حسب الجهاز
 
-- صفحة التثبيت تكتشف تلقائيًا إذا كان المستخدم على كمبيوتر أو جوال.
-- الكمبيوتر: سحب زر الأداة إلى شريط المفضلة.
-- الجوال: زر **نسخ كود الأداة** + شرح إنشاء Bookmarklet يدويًا.
-- زر **نسخ النسخة المستقلة** كحل احتياطي إذا منع الموقع تحميل `app.js`.
-- شرح مصور منفصل للكمبيوتر والجوال.
+### Desktop
+Bookmarklet بالسحب إلى شريط المفضلة.
 
-## رابط GitHub Pages
+### Android
+Bookmarklet قصير يتم نسخه إلى رابط Bookmark باسم `بحث التدريب`.
 
-`https://yzeeyd.github.io/training-entity-search/`
+### iPhone / iPad
+طريقتان:
+1. Bookmarklet قصير.
+2. Apple Shortcuts عبر `Run JavaScript on Webpage` في Safari كخيار احتياطي.
 
-## المزايا الأساسية
+## ملفات مهمة
+- `index.html` صفحة التثبيت الذكية
+- `app.js` الأداة الأساسية
+- `bookmarklet.txt` الكود القصير
+- `ios-shortcut.js` كود Apple Shortcuts
+- `standalone-bookmarklet.txt` نسخة مستقلة
+- `assets/iphone-install.svg`
+- `assets/mobile-install.svg`
+- `assets/install.svg`
+- `assets/usage.svg`
 
-- بحث عربي مع تطبيع للأحرف والمسافات.
-- بحث تقريبي للأخطاء الإملائية البسيطة.
-- تصنيفات: بنوك، تقنية، حكومي، صحي، اتصالات.
-- المفضلة ⭐ والجهات المستخدمة مؤخرًا.
-- إزالة النتائج المكررة بصريًا.
-- Light/Dark تلقائي.
-- لا يوجد Backend.
-
-## التحديث التلقائي
-
-الـBookmarklet السريع يحمل أحدث `app.js` من GitHub Pages، لذلك تحديث `app.js` يصل للمستخدمين غالبًا بدون إعادة تثبيت.
-
-بعض المواقع قد تمنع تحميل JavaScript خارجي بسبب CSP. في هذه الحالة استخدم:
-`standalone-bookmarklet.txt`
-
-## النشر
-
-ارفع كل الملفات إلى جذر مستودع:
-`training-entity-search`
-
-ثم:
-`Settings → Pages → Deploy from a branch → main → / (root)`
-
-## الخصوصية
-
-المفضلة، آخر الاختيارات، وعدد الاستخدامات محفوظة داخل `localStorage` في جهاز المستخدم فقط.
+## GitHub Pages
+https://yzeeyd.github.io/training-entity-search/
 
 ## الإصدار
-
-`V5.1 / 5.1.0`
+5.2.0
