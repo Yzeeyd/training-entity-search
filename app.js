@@ -1,0 +1,547 @@
+(() => {
+  "use strict";
+
+  const VERSION = "5.1.0";
+  const FRAME_ID = "training-entity-search-v5-frame";
+  const STORAGE_KEY = "trainingEntitySearchV5";
+  const PAGE_URL = "https://yzeeyd.github.io/training-entity-search/";
+
+  if (window.TrainingEntitySearchV5?.version === VERSION) return;
+
+  const normalize = (value = "") =>
+    String(value)
+      .normalize("NFD")
+      .replace(/[\u064B-\u065F\u0670\u0640]/g, "")
+      .replace(/[أإآٱ]/g, "ا")
+      .replace(/ى/g, "ي")
+      .replace(/ة/g, "ه")
+      .replace(/ؤ/g, "و")
+      .replace(/ئ/g, "ي")
+      .replace(/[\u200e\u200f\u061c]/g, "")
+      .replace(/\u00a0/g, " ")
+      .replace(/[^\p{L}\p{N}\s]/gu, " ")
+      .replace(/\s+/g, " ")
+      .trim()
+      .toLowerCase();
+
+  const aliases = {
+    "بنك": ["بنك", "مصرف"],
+    "مصرف": ["مصرف", "بنك"],
+    "اس تي سي": ["stc", "اس تي سي", "الاتصالات السعوديه"],
+    "stc": ["stc", "اس تي سي", "الاتصالات السعوديه"],
+    "سايبر": ["سايبر", "امن سيبراني", "الامن السيبراني"],
+  };
+
+  const categories = [
+    {
+      id: "banks",
+      label: "بنوك",
+      terms: ["بنك", "مصرف"],
+    },
+    {
+      id: "tech",
+      label: "تقنية",
+      terms: ["تقنيه", "تقنية", "ذكاء", "بيانات", "رقمي", "برمج", "نظم", "معلومات", "سايبر", "امن سيبراني", "اتصالات"],
+    },
+    {
+      id: "gov",
+      label: "حكومي",
+      terms: ["وزاره", "وزارة", "هيئه", "هيئة", "امانه", "أمانة", "بلديه", "بلدية", "ديوان", "جامعه", "جامعة", "صندوق", "اداره", "إدارة"],
+    },
+    {
+      id: "health",
+      label: "صحي",
+      terms: ["مستشفى", "صحه", "صحة", "صحي", "طبي", "طبيه", "طبية", "رعايه", "رعاية", "دواء"],
+    },
+    {
+      id: "telecom",
+      label: "اتصالات",
+      terms: ["اتصالات", "stc", "موبايلي", "زين", "هواوي", "نوكيا", "سلام"],
+    },
+  ];
+
+  const readState = () => {
+    try {
+      const parsed = JSON.parse(localStorage.getItem(STORAGE_KEY) || "{}");
+      return {
+        usage: parsed.usage || {},
+        favorites: parsed.favorites || {},
+        recent: Array.isArray(parsed.recent) ? parsed.recent : [],
+      };
+    } catch {
+      return { usage: {}, favorites: {}, recent: [] };
+    }
+  };
+
+  const writeState = (state) => {
+    try {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+    } catch {}
+  };
+
+  const optionName = (el) =>
+    (el.getAttribute("aria-label") || el.textContent || "")
+      .replace(/\s+/g, " ")
+      .trim();
+
+  const findTrainingMultiselect = () => {
+    const candidates = [...document.querySelectorAll(".multiselect")]
+      .map((el) => ({
+        el,
+        options: [...el.querySelectorAll('.multiselect-option,[role="option"]')],
+      }))
+      .filter((x) => x.options.length > 0);
+
+    if (!candidates.length) return null;
+
+    const contextText = (el) => {
+      let current = el;
+      let text = "";
+      for (let i = 0; i < 4 && current; i++, current = current.parentElement) {
+        text += " " + (current.innerText || "");
+      }
+      return normalize(text).slice(0, 4000);
+    };
+
+    const scored = candidates.map((c) => {
+      const text = contextText(c.el);
+      let score = 0;
+      if (text.includes("جهه التدريب") || text.includes("جهة التدريب")) score += 500;
+      if (text.includes("التدريب")) score += 120;
+      if (text.includes("جهه") || text.includes("جهة")) score += 80;
+      if (c.options.length >= 100) score += 30;
+      score += Math.min(c.options.length / 10, 50);
+      return { ...c, score };
+    });
+
+    scored.sort((a, b) => b.score - a.score);
+    return scored[0];
+  };
+
+  const levenshtein = (a, b) => {
+    if (a === b) return 0;
+    if (!a.length) return b.length;
+    if (!b.length) return a.length;
+
+    const prev = Array.from({ length: b.length + 1 }, (_, i) => i);
+    const curr = new Array(b.length + 1);
+
+    for (let i = 1; i <= a.length; i++) {
+      curr[0] = i;
+      for (let j = 1; j <= b.length; j++) {
+        curr[j] = Math.min(
+          curr[j - 1] + 1,
+          prev[j] + 1,
+          prev[j - 1] + (a[i - 1] === b[j - 1] ? 0 : 1)
+        );
+      }
+      for (let j = 0; j <= b.length; j++) prev[j] = curr[j];
+    }
+    return prev[b.length];
+  };
+
+  const fuzzyTokenMatch = (queryToken, candidateToken) => {
+    if (!queryToken || !candidateToken) return false;
+    if (candidateToken.includes(queryToken) || queryToken.includes(candidateToken)) return true;
+
+    const limit =
+      queryToken.length <= 4 ? 1 :
+      queryToken.length <= 8 ? 2 : 3;
+
+    if (Math.abs(queryToken.length - candidateToken.length) > limit) return false;
+    return levenshtein(queryToken, candidateToken) <= limit;
+  };
+
+  const queryGroups = (query) =>
+    normalize(query)
+      .split(" ")
+      .filter(Boolean)
+      .map((token) => aliases[token] || [token]);
+
+  const matchQuery = (name, query) => {
+    if (!query.trim()) return true;
+
+    const normalizedName = normalize(name);
+    const nameTokens = normalizedName.split(" ").filter(Boolean);
+
+    return queryGroups(query).every((group) =>
+      group.some((queryToken) =>
+        normalizedName.includes(queryToken) ||
+        nameTokens.some((candidateToken) => fuzzyTokenMatch(queryToken, candidateToken))
+      )
+    );
+  };
+
+  const categoryMatch = (name, categoryId) => {
+    if (!categoryId) return true;
+    const category = categories.find((c) => c.id === categoryId);
+    if (!category) return true;
+    const n = normalize(name);
+    return category.terms.some((term) => n.includes(normalize(term)));
+  };
+
+  const scoreName = (name, query, state) => {
+    const n = normalize(name);
+    const q = normalize(query);
+    let score = 0;
+
+    if (q) {
+      if (n === q) score += 1000;
+      if (n.startsWith(q)) score += 350;
+      if (n.includes(q)) score += 180;
+
+      for (const group of queryGroups(query)) {
+        if (group.some((t) => n.startsWith(t))) score += 60;
+        if (group.some((t) => n.includes(t))) score += 25;
+      }
+    }
+
+    const usage = state.usage[name];
+    if (usage) score += Math.min((usage.count || 0) * 4, 100);
+
+    if (state.favorites[name]) score += 130;
+
+    return score;
+  };
+
+  const uniqueOptions = (options) => {
+    const seen = new Map();
+
+    for (const el of options) {
+      const name = optionName(el);
+      if (!name) continue;
+
+      const key = normalize(name);
+      if (!key) continue;
+
+      if (!seen.has(key)) seen.set(key, { name, el });
+    }
+
+    return [...seen.values()];
+  };
+
+  const open = () => {
+    const existing = document.getElementById(FRAME_ID);
+    if (existing) {
+      existing.remove();
+      return true;
+    }
+
+    const found = findTrainingMultiselect();
+    if (!found) {
+      alert("تعذر العثور على قائمة جهة التدريب في هذه الصفحة.\n\nتأكد أنك داخل صفحة اختيار جهة التدريب ثم شغّل الأداة مرة أخرى.");
+      return false;
+    }
+
+    const allOptions = uniqueOptions(found.options);
+    const state = readState();
+
+    const frame = document.createElement("iframe");
+    frame.id = FRAME_ID;
+    frame.title = "بحث جهة التدريب";
+    frame.style.cssText =
+      "position:fixed;inset:0;width:100vw;height:100vh;border:0;z-index:2147483647;background:transparent;";
+    document.documentElement.appendChild(frame);
+
+    const d = frame.contentDocument;
+    d.open();
+    d.write(`<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<style>
+*{box-sizing:border-box}
+html,body{margin:0;width:100%;height:100%;font-family:Arial,sans-serif}
+body{
+  --bg:#fff;--fg:#0a0a0a;--soft:#f5f5f5;--soft2:#ececec;--line:#d8d8d8;--muted:#6b6b6b;
+  background:rgba(0,0,0,.45);display:flex;align-items:flex-start;justify-content:center;padding:18px;color:var(--fg)
+}
+@media(prefers-color-scheme:dark){
+  body{--bg:#0c0c0c;--fg:#fff;--soft:#171717;--soft2:#222;--line:#333;--muted:#aaa;background:rgba(0,0,0,.7)}
+}
+button,input{font:inherit}
+.card{
+  width:min(820px,96vw);max-height:94vh;background:var(--bg);border:1px solid var(--line);border-radius:20px;
+  box-shadow:0 24px 80px rgba(0,0,0,.35);padding:18px;display:flex;flex-direction:column
+}
+.header{display:flex;align-items:center;justify-content:space-between;gap:16px;margin-bottom:12px}
+.title{font-size:20px;font-weight:900}.sub{font-size:12px;color:var(--muted);margin-top:2px}
+.version{font-size:11px;border:1px solid var(--line);padding:3px 7px;border-radius:999px;color:var(--muted)}
+.close{width:46px;height:46px;border:1px solid var(--line);border-radius:12px;background:var(--soft);color:var(--fg);font-size:24px;cursor:pointer}
+.search{display:flex;gap:8px}
+.q{width:100%;padding:14px 16px;border:1px solid var(--line);border-radius:12px;background:var(--bg);color:var(--fg);font-size:18px;outline:none}
+.q:focus{border-color:var(--fg)}
+.chips{display:flex;gap:7px;flex-wrap:wrap;margin:11px 0 6px}
+.chip{border:1px solid var(--line);background:var(--soft);color:var(--fg);border-radius:999px;padding:7px 11px;cursor:pointer;font-size:13px}
+.chip.active{background:var(--fg);color:var(--bg);border-color:var(--fg)}
+.meta{display:flex;justify-content:space-between;gap:12px;color:var(--muted);font-size:12px;padding:6px 2px}
+.results{overflow:auto;max-height:58vh;padding-left:2px}
+.row{display:grid;grid-template-columns:42px 1fr 42px;gap:7px;align-items:stretch;margin:6px 0}
+.item,.icon{border:1px solid var(--line);background:var(--soft);color:var(--fg);border-radius:11px;cursor:pointer}
+.item{text-align:right;padding:12px 13px;font-size:15px}
+.item:hover,.item:focus{background:var(--fg);color:var(--bg);outline:none}
+.icon{font-size:18px;display:flex;align-items:center;justify-content:center}
+.icon:hover{background:var(--soft2)}
+.empty{text-align:center;padding:30px 12px;color:var(--muted)}
+.section-title{font-size:12px;color:var(--muted);font-weight:700;margin:10px 2px 4px}
+.footer{display:flex;justify-content:space-between;gap:10px;align-items:center;border-top:1px solid var(--line);padding-top:10px;margin-top:8px;font-size:11px;color:var(--muted)}
+.link,.reset{border:0;background:none;color:var(--muted);text-decoration:underline;cursor:pointer;padding:0}
+.toast{position:fixed;bottom:22px;left:50%;transform:translateX(-50%);background:var(--fg);color:var(--bg);padding:10px 14px;border-radius:10px;font-size:13px;box-shadow:0 8px 30px rgba(0,0,0,.3)}
+@media(max-width:600px){
+  body{padding:8px}.card{padding:12px;border-radius:16px}.title{font-size:18px}.q{font-size:16px}.row{grid-template-columns:38px 1fr 38px}
+}
+</style>
+</head>
+<body>
+<div class="card">
+  <div class="header">
+    <div>
+      <div style="display:flex;gap:8px;align-items:center"><span class="title">بحث جهة التدريب</span><span class="version">v${VERSION}</span></div>
+      <div class="sub">ابحث ثم اختر الجهة مباشرة من القائمة الأصلية</div>
+    </div>
+    <button class="close" id="close" aria-label="إغلاق">×</button>
+  </div>
+
+  <div class="search"><input id="q" class="q" placeholder="مثال: بنك، سدايا، وزارة، مستشفى..." autocomplete="off"></div>
+
+  <div class="chips" id="chips"></div>
+  <div class="meta"><span id="count"></span><span id="hint"></span></div>
+  <div class="results" id="results"></div>
+
+  <div class="footer">
+    <span>⭐ المفضلة و"الأخيرة" محفوظة على جهازك فقط.</span>
+    <span><button id="reset" class="reset">مسح بيانات الأداة</button> · <a class="link" href="${PAGE_URL}" target="_blank">المساعدة</a></span>
+  </div>
+</div>
+</body>
+</html>`);
+    d.close();
+
+    const q = d.getElementById("q");
+    const results = d.getElementById("results");
+    const count = d.getElementById("count");
+    const hint = d.getElementById("hint");
+    const chips = d.getElementById("chips");
+
+    let activeCategory = "";
+    let itemButtons = [];
+    let keyboardIndex = -1;
+
+    const toast = (text) => {
+      const t = d.createElement("div");
+      t.className = "toast";
+      t.textContent = text;
+      d.body.appendChild(t);
+      setTimeout(() => t.remove(), 1300);
+    };
+
+    const currentRows = () => {
+      const query = q.value.trim();
+
+      return allOptions
+        .filter((x) => matchQuery(x.name, query))
+        .filter((x) => categoryMatch(x.name, activeCategory))
+        .map((x) => ({
+          ...x,
+          score: scoreName(x.name, query, state),
+          favorite: !!state.favorites[x.name],
+          recentIndex: state.recent.indexOf(x.name),
+        }))
+        .sort((a, b) => {
+          if (query) return b.score - a.score || a.name.localeCompare(b.name, "ar");
+          if (a.favorite !== b.favorite) return Number(b.favorite) - Number(a.favorite);
+          if (a.recentIndex !== b.recentIndex) {
+            if (a.recentIndex < 0) return 1;
+            if (b.recentIndex < 0) return -1;
+            return a.recentIndex - b.recentIndex;
+          }
+          const au = state.usage[a.name]?.count || 0;
+          const bu = state.usage[b.name]?.count || 0;
+          return bu - au || a.name.localeCompare(b.name, "ar");
+        });
+    };
+
+    const selectOption = (row) => {
+      state.usage[row.name] = {
+        count: (state.usage[row.name]?.count || 0) + 1,
+        last: Date.now(),
+      };
+      state.recent = [row.name, ...state.recent.filter((x) => x !== row.name)].slice(0, 8);
+      writeState(state);
+
+      frame.remove();
+
+      const wrapper = found.el.querySelector(".multiselect-wrapper,[role='combobox']");
+      if (wrapper && wrapper.getAttribute("aria-expanded") !== "true") wrapper.click();
+
+      setTimeout(() => {
+        row.el.scrollIntoView({ block: "center" });
+        row.el.click();
+      }, 120);
+    };
+
+    const addRow = (row, parent) => {
+      const wrap = d.createElement("div");
+      wrap.className = "row";
+
+      const fav = d.createElement("button");
+      fav.className = "icon";
+      fav.title = row.favorite ? "إزالة من المفضلة" : "إضافة للمفضلة";
+      fav.textContent = row.favorite ? "★" : "☆";
+      fav.onclick = () => {
+        if (state.favorites[row.name]) delete state.favorites[row.name];
+        else state.favorites[row.name] = true;
+        writeState(state);
+        render();
+      };
+
+      const item = d.createElement("button");
+      item.className = "item";
+      item.textContent = row.name;
+      item.onclick = () => selectOption(row);
+
+      const copy = d.createElement("button");
+      copy.className = "icon";
+      copy.title = "نسخ اسم الجهة";
+      copy.textContent = "⧉";
+      copy.onclick = async () => {
+        try {
+          await navigator.clipboard.writeText(row.name);
+          toast("تم نسخ اسم الجهة");
+        } catch {
+          toast("تعذر النسخ");
+        }
+      };
+
+      wrap.append(fav, item, copy);
+      parent.appendChild(wrap);
+      itemButtons.push(item);
+    };
+
+    const render = () => {
+      const rows = currentRows();
+      itemButtons = [];
+      keyboardIndex = -1;
+      results.innerHTML = "";
+
+      count.textContent = `${rows.length} جهة`;
+      hint.textContent =
+        q.value.trim() || activeCategory
+          ? "Enter لاختيار أول نتيجة"
+          : "المفضلة والأخيرة تظهر أولًا";
+
+      if (!rows.length) {
+        const empty = d.createElement("div");
+        empty.className = "empty";
+        empty.innerHTML = "لا توجد نتائج<br><span style='font-size:12px'>جرّب كلمة أقصر أو تصنيفًا آخر</span>";
+        results.appendChild(empty);
+        return;
+      }
+
+      if (!q.value.trim() && !activeCategory) {
+        const favRows = rows.filter((r) => r.favorite);
+        const recentRows = rows.filter((r) => !r.favorite && r.recentIndex >= 0);
+        const restRows = rows.filter((r) => !r.favorite && r.recentIndex < 0);
+
+        const groups = [
+          ["المفضلة", favRows],
+          ["استخدمتها مؤخرًا", recentRows],
+          ["كل الجهات", restRows],
+        ];
+
+        for (const [title, list] of groups) {
+          if (!list.length) continue;
+          const h = d.createElement("div");
+          h.className = "section-title";
+          h.textContent = title;
+          results.appendChild(h);
+          list.forEach((row) => addRow(row, results));
+        }
+      } else {
+        rows.forEach((row) => addRow(row, results));
+      }
+    };
+
+    for (const category of categories) {
+      const button = d.createElement("button");
+      button.className = "chip";
+      button.textContent = category.label;
+      button.dataset.id = category.id;
+      button.onclick = () => {
+        activeCategory = activeCategory === category.id ? "" : category.id;
+        [...chips.children].forEach((el) =>
+          el.classList.toggle("active", el.dataset.id === activeCategory)
+        );
+        render();
+        q.focus();
+      };
+      chips.appendChild(button);
+    }
+
+    q.addEventListener("input", render);
+
+    q.addEventListener("keydown", (event) => {
+      if (event.key === "Escape") {
+        frame.remove();
+        return;
+      }
+
+      if (event.key === "Enter" && itemButtons.length) {
+        event.preventDefault();
+        itemButtons[0].click();
+        return;
+      }
+
+      if (event.key === "ArrowDown" && itemButtons.length) {
+        event.preventDefault();
+        keyboardIndex = 0;
+        itemButtons[0].focus();
+      }
+    });
+
+    results.addEventListener("keydown", (event) => {
+      if (!itemButtons.length) return;
+
+      if (event.key === "Escape") {
+        frame.remove();
+        return;
+      }
+
+      const current = itemButtons.indexOf(d.activeElement);
+      if (event.key === "ArrowDown") {
+        event.preventDefault();
+        keyboardIndex = current < 0 ? 0 : (current + 1) % itemButtons.length;
+        itemButtons[keyboardIndex].focus();
+      } else if (event.key === "ArrowUp") {
+        event.preventDefault();
+        keyboardIndex =
+          current < 0 ? itemButtons.length - 1 : (current - 1 + itemButtons.length) % itemButtons.length;
+        itemButtons[keyboardIndex].focus();
+      }
+    });
+
+    d.getElementById("close").onclick = () => frame.remove();
+
+    d.getElementById("reset").onclick = () => {
+      state.usage = {};
+      state.favorites = {};
+      state.recent = [];
+      writeState(state);
+      render();
+      q.focus();
+      toast("تم مسح بيانات الأداة");
+    };
+
+    d.body.addEventListener("click", (event) => {
+      if (event.target === d.body) frame.remove();
+    });
+
+    render();
+    setTimeout(() => q.focus(), 50);
+
+    return true;
+  };
+
+  window.TrainingEntitySearchV5 = { version: VERSION, open };
+})();
