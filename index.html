@@ -25,28 +25,34 @@ p{color:var(--muted)}
 .grid{display:grid;grid-template-columns:repeat(2,1fr);gap:16px} .card{border:1px solid var(--line);border-radius:16px;padding:18px}
 .hidden{display:none!important} img{width:100%;height:auto;border:1px solid var(--line);border-radius:14px;background:white}
 code{background:var(--soft);padding:2px 6px;border-radius:6px;word-break:break-word}
-.pill{display:inline-flex;margin-top:8px;padding:6px 10px;border-radius:999px;background:var(--soft);border:1px solid var(--line);font-size:12px;color:var(--muted)}
+.pills{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+.pill{display:inline-flex;padding:6px 10px;border-radius:999px;background:var(--soft);border:1px solid var(--line);font-size:12px;color:var(--muted)}
 .toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:var(--fg);color:var(--bg);padding:10px 14px;border-radius:10px;z-index:99}
 .small{font-size:13px} .footer{border-top:1px solid var(--line);margin-top:48px;padding-top:20px;color:var(--muted);font-size:13px}
+.browser-note strong{color:var(--fg)}
 @media(max-width:760px){.wrap{padding:24px 14px 60px}h1{font-size:36px}.steps,.grid{grid-template-columns:1fr}.actions{display:grid;grid-template-columns:1fr}.primary,.secondary{width:100%}}
 </style>
 </head>
 <body>
 <main class="wrap">
 <section class="hero">
-<span class="badge">V5.2 · iPhone + Android + Desktop</span>
+<span class="badge">V5.3 · Device + Browser Detection</span>
 <h1>بحث جهة التدريب</h1>
-<p>نفس الأداة، لكن صفحة التثبيت تعرض الطريقة المناسبة تلقائيًا حسب جهاز الطالب.</p>
-<div id="device" class="pill">جارٍ تحديد الجهاز…</div>
+<p>الصفحة تحدد نوع الجهاز والمتصفح تلقائيًا، ثم تعرض طريقة التثبيت الأنسب.</p>
+
+<div class="pills">
+  <div id="devicePill" class="pill">الجهاز: جارٍ التحديد…</div>
+  <div id="browserPill" class="pill">المتصفح: جارٍ التحديد…</div>
+</div>
 
 <div id="desktopHero" class="hidden">
   <div class="actions"><a class="primary" href="javascript:(()=&gt;{let s=document.createElement(&#x27;script&#x27;);s.src=&#x27;https://yzeeyd.github.io/training-entity-search/app.js?t=&#x27;+Date.now();s.onload=()=&gt;window.TrainingEntitySearchV5?.open();s.onerror=()=&gt;alert(&#x27;تعذر تحميل الأداة&#x27;);document.documentElement.appendChild(s)})();">🔍 اسحب إلى شريط المفضلة</a></div>
-  <div class="note"><b>كمبيوتر:</b> اسحب الزر إلى شريط المفضلة، ثم شغله داخل صفحة اختيار جهة التدريب.</div>
+  <div class="note browser-note" id="desktopBrowserNote"></div>
 </div>
 
 <div id="androidHero" class="hidden">
-  <div class="actions"><button class="primary copyQuick">نسخ كود Android</button></div>
-  <div class="note"><b>Android:</b> احفظ Bookmark باسم <b>بحث التدريب</b> واستبدل رابطه بالكود المنسوخ. الكود قصير جدًا وأقل بكثير من 2048 حرف.</div>
+  <div class="actions"><button class="primary copyQuick">نسخ كود التثبيت</button></div>
+  <div class="note browser-note" id="androidBrowserNote"></div>
 </div>
 
 <div id="iphoneHero" class="hidden">
@@ -54,49 +60,48 @@ code{background:var(--soft);padding:2px 6px;border-radius:6px;word-break:break-w
     <button class="primary copyQuick">نسخ كود iPhone</button>
     <button class="secondary" id="copyIOSShortcut">نسخ كود Apple Shortcuts</button>
   </div>
-  <div class="note">
-    <b>iPhone:</b> الطريقة السريعة Bookmarklet قصير مثل Android. وإذا Safari/Brave رفض تشغيله، عندك طريقة احتياطية رسمية عبر تطبيق <b>Shortcuts</b> في Safari.
-  </div>
+  <div class="note browser-note" id="iphoneBrowserNote"></div>
 </div>
 </section>
 
 <section id="desktopInstall" class="hidden">
 <h2>تثبيت الكمبيوتر</h2>
 <div class="steps">
-<div class="step"><h3>أظهر شريط المفضلة</h3><p><code>Ctrl + Shift + B</code></p></div>
-<div class="step"><h3>اسحب الزر</h3><p>اسحب زر الأداة من أعلى الصفحة إلى شريط المفضلة.</p></div>
-<div class="step"><h3>شغله</h3><p>افتح صفحة التدريب واضغط المفضلة.</p></div>
+<div class="step"><h3>أظهر شريط المفضلة</h3><p id="desktopStep1">استخدم شريط المفضلة في متصفحك.</p></div>
+<div class="step"><h3>اسحب الزر</h3><p>اسحب زر <b>بحث جهة التدريب</b> من أعلى الصفحة إلى شريط المفضلة.</p></div>
+<div class="step"><h3>شغّل الأداة</h3><p>افتح صفحة التدريب واضغط المفضلة.</p></div>
 </div>
 <img src="assets/install.svg" alt="شرح الكمبيوتر">
 </section>
 
 <section id="androidInstall" class="hidden">
-<h2>تثبيت Android</h2>
+<h2 id="androidTitle">تثبيت الجوال</h2>
 <div class="steps">
-<div class="step"><h3>انسخ الكود</h3><p>اضغط <b>نسخ كود Android</b>.</p></div>
-<div class="step"><h3>أنشئ Bookmark</h3><p>سمّه <b>بحث التدريب</b> واستبدل الرابط بالكود.</p></div>
-<div class="step"><h3>شغله</h3><p>وأنت داخل صفحة الجامعة افتح الـBookmark.</p></div>
+<div class="step"><h3>انسخ الكود</h3><p>اضغط <b>نسخ كود التثبيت</b>.</p></div>
+<div class="step"><h3>أنشئ Bookmark</h3><p id="androidBookmarkHelp">أنشئ مفضلة باسم <b>بحث التدريب</b> ثم استبدل الرابط بالكود.</p></div>
+<div class="step"><h3>شغّله</h3><p>وأنت داخل صفحة الجامعة افتح المفضلة <b>بحث التدريب</b>.</p></div>
 </div>
-<img src="assets/mobile-install.svg" alt="شرح Android">
+<img src="assets/mobile-install.svg" alt="شرح الجوال">
 </section>
 
 <section id="iphoneInstall" class="hidden">
-<h2>تثبيت iPhone — الطريقة السريعة</h2>
+<h2>تثبيت iPhone / iPad</h2>
 <div class="steps">
 <div class="step"><h3>انسخ الكود</h3><p>اضغط <b>نسخ كود iPhone</b>.</p></div>
-<div class="step"><h3>احفظ Bookmark</h3><p>في Safari احفظ الصفحة كإشارة مرجعية، ثم عدّلها. الاسم <b>بحث التدريب</b> والرابط هو الكود المنسوخ.</p></div>
-<div class="step"><h3>شغله</h3><p>افتح صفحة التدريب، ثم افتح الإشارات المرجعية واضغط <b>بحث التدريب</b>.</p></div>
+<div class="step"><h3>احفظ Bookmark</h3><p id="iphoneBookmarkHelp">احفظ الصفحة كإشارة مرجعية، ثم عدّل الرابط إلى الكود المنسوخ.</p></div>
+<div class="step"><h3>شغّله</h3><p>افتح صفحة التدريب ثم افتح الإشارات المرجعية واختر <b>بحث التدريب</b>.</p></div>
 </div>
 <img src="assets/iphone-install.svg" alt="شرح iPhone">
 
-<h2>iPhone — طريقة Apple Shortcuts الاحتياطية</h2>
+<div id="iosSafariFallback">
+<h2>طريقة Apple Shortcuts الاحتياطية</h2>
 <div class="grid">
-<div class="card"><h3>1. أنشئ Shortcut</h3><p>افتح تطبيق <b>Shortcuts</b> وأضف الإجراء <b>Run JavaScript on Webpage</b>.</p></div>
-<div class="card"><h3>2. الصق الكود</h3><p>اضغط زر <b>نسخ كود Apple Shortcuts</b> أعلى الصفحة والصقه داخل الإجراء.</p></div>
-<div class="card"><h3>3. فعّل Share Sheet</h3><p>من تفاصيل الاختصار فعّل <b>Show in Share Sheet</b> واجعله يستقبل Safari webpages.</p></div>
+<div class="card"><h3>1. أنشئ Shortcut</h3><p>أضف الإجراء <b>Run JavaScript on Webpage</b>.</p></div>
+<div class="card"><h3>2. الصق الكود</h3><p>انسخ كود Apple Shortcuts من أعلى الصفحة والصقه في الإجراء.</p></div>
+<div class="card"><h3>3. Share Sheet</h3><p>فعّل <b>Show in Share Sheet</b> واجعله يستقبل صفحات Safari.</p></div>
 <div class="card"><h3>4. التشغيل</h3><p>داخل صفحة الجامعة في Safari: مشاركة → اختر الاختصار.</p></div>
 </div>
-<div class="note small">هذه الطريقة تعتمد على ميزة رسمية من Apple لتشغيل JavaScript على صفحة Safari الحالية.</div>
+</div>
 </section>
 
 <section>
@@ -110,7 +115,9 @@ code{background:var(--soft);padding:2px 6px;border-radius:6px;word-break:break-w
 <img src="assets/usage.svg" alt="شرح الاستخدام">
 </section>
 
-<div class="footer">الأداة تبحث فقط داخل الخيارات الموجودة أصلًا في صفحة الجامعة.</div>
+<div class="footer">
+اكتشاف المتصفح تقريبي لأن بعض المتصفحات، خصوصًا على iPhone، تقلل المعلومات التي تكشفها للمواقع.
+</div>
 </main>
 
 <script>
@@ -126,23 +133,95 @@ async function copyText(text){
  }
 }
 
-const ua=navigator.userAgent||'';
-const isiPhone=/iPhone|iPad|iPod/i.test(ua);
-const isAndroid=/Android/i.test(ua);
-const isMobile=isiPhone||isAndroid||matchMedia('(pointer:coarse)').matches||innerWidth<760;
+async function detectBrowser(){
+  const ua=navigator.userAgent||'';
+  const u=ua.toLowerCase();
 
-let type='desktop';
-if(isiPhone) type='iphone'; else if(isAndroid||isMobile) type='android';
+  try{
+    if(navigator.brave && await navigator.brave.isBrave()) return {id:'brave',name:'Brave'};
+  }catch(e){}
 
-document.getElementById('device').textContent =
- type==='iphone'?'🍎 تم اكتشاف iPhone / iPad':
- type==='android'?'📱 تم اكتشاف Android':'💻 تم اكتشاف كمبيوتر';
+  if(/SamsungBrowser/i.test(ua)) return {id:'samsung',name:'Samsung Internet'};
+  if(/EdgiOS|EdgA|Edg\//i.test(ua)) return {id:'edge',name:'Microsoft Edge'};
+  if(/FxiOS|Firefox\//i.test(ua)) return {id:'firefox',name:'Firefox'};
+  if(/OPiOS|OPR\//i.test(ua)) return {id:'opera',name:'Opera'};
+  if(/CriOS|Chrome\//i.test(ua)) return {id:'chrome',name:'Google Chrome'};
+  if(/Version\/.*Safari\//i.test(ua) && !/Chrome|CriOS|Edg|OPR|FxiOS/i.test(ua)) return {id:'safari',name:'Safari'};
+  return {id:'unknown',name:'متصفح غير معروف'};
+}
 
-document.getElementById(type+'Hero').classList.remove('hidden');
-document.getElementById(type+'Install').classList.remove('hidden');
+function detectDevice(){
+  const ua=navigator.userAgent||'';
+  if(/iPhone|iPad|iPod/i.test(ua)) return 'iphone';
+  if(/Android/i.test(ua)) return 'android';
+  if(matchMedia('(pointer:coarse)').matches && innerWidth<900) return 'android';
+  return 'desktop';
+}
 
-document.querySelectorAll('.copyQuick').forEach(b=>b.addEventListener('click',()=>copyText(QUICK)));
-document.getElementById('copyIOSShortcut')?.addEventListener('click',()=>copyText(IOS_SHORTCUT));
+(async()=>{
+  const device=detectDevice();
+  const browser=await detectBrowser();
+
+  document.getElementById('devicePill').textContent =
+    'الجهاز: '+(device==='iphone'?'iPhone / iPad':device==='android'?'Android / Mobile':'Desktop');
+  document.getElementById('browserPill').textContent='المتصفح: '+browser.name;
+
+  document.getElementById(device+'Hero').classList.remove('hidden');
+  document.getElementById(device+'Install').classList.remove('hidden');
+
+  if(device==='desktop'){
+    const note=document.getElementById('desktopBrowserNote');
+    const step=document.getElementById('desktopStep1');
+
+    if(['brave','chrome','edge','opera'].includes(browser.id)){
+      note.innerHTML='<strong>'+browser.name+':</strong> اسحب الزر إلى شريط المفضلة. إذا كان الشريط مخفيًا استخدم <code>Ctrl + Shift + B</code>.';
+      step.innerHTML='في '+browser.name+' استخدم <code>Ctrl + Shift + B</code> لإظهار شريط المفضلة.';
+    }else if(browser.id==='firefox'){
+      note.innerHTML='<strong>Firefox:</strong> أظهر شريط Bookmarks Toolbar ثم اسحب الزر إليه.';
+      step.innerHTML='في Firefox: Menu → Bookmarks → Bookmarks Toolbar، ثم أظهر الشريط.';
+    }else if(browser.id==='safari'){
+      note.innerHTML='<strong>Safari:</strong> أضف الرابط إلى Favorites/Bookmarks، ثم عدّل عنوانه إلى كود الأداة إذا احتجت.';
+      step.textContent='استخدم Favorites / Bookmarks في Safari.';
+    }else{
+      note.innerHTML='<strong>متصفحك:</strong> استخدم المفضلة/Bookmarks. إذا لم يعمل السحب، أنشئ Bookmark يدويًا وضع كود الأداة كرابط.';
+    }
+  }
+
+  if(device==='android'){
+    document.getElementById('androidTitle').textContent='تثبيت '+browser.name+' على الجوال';
+    const note=document.getElementById('androidBrowserNote');
+    const help=document.getElementById('androidBookmarkHelp');
+
+    const generic='<strong>'+browser.name+':</strong> انسخ الكود، أنشئ Bookmark باسم <b>بحث التدريب</b>، ثم عدّل الرابط والصق الكود.';
+    note.innerHTML=generic;
+
+    if(browser.id==='samsung'){
+      help.innerHTML='في Samsung Internet: احفظ الصفحة في Bookmarks، ثم عدّل الـBookmark واستبدل الرابط بالكود.';
+    }else if(browser.id==='firefox'){
+      note.innerHTML='<strong>Firefox Android:</strong> دعم Bookmarklets قد يختلف حسب الإصدار. جرّب الطريقة العادية، وإذا لم تعمل استخدم Chrome/Brave لهذه الأداة.';
+    }else if(browser.id==='brave'){
+      help.innerHTML='في Brave: احفظ الصفحة في Bookmarks، ثم افتح إدارة Bookmarks وعدّل الرابط إلى الكود المنسوخ.';
+    }else if(browser.id==='chrome'){
+      help.innerHTML='في Chrome: احفظ الصفحة كBookmark، ثم من إدارة Bookmarks عدّل الرابط والصق الكود.';
+    }
+  }
+
+  if(device==='iphone'){
+    const note=document.getElementById('iphoneBrowserNote');
+    const help=document.getElementById('iphoneBookmarkHelp');
+
+    if(browser.id==='safari'){
+      note.innerHTML='<strong>Safari:</strong> هذه أفضل بيئة على iPhone للأداة. استخدم Bookmarklet القصير، وإذا لم يعمل استخدم Apple Shortcuts.';
+      help.innerHTML='في Safari: مشاركة → Add Bookmark، ثم افتح الإشارات المرجعية وعدّل الرابط إلى الكود المنسوخ.';
+    }else{
+      note.innerHTML='<strong>'+browser.name+':</strong> على iPhone كل المتصفحات تعمل بقيود iOS نفسها تقريبًا. جرّب Bookmarklet القصير أولًا. إذا لم يعمل، افتح نفس صفحة الجامعة في <b>Safari</b> واستخدم Apple Shortcuts.';
+      help.innerHTML='أنشئ Bookmark في '+browser.name+' إن كان يسمح بتعديل الرابط. إذا لم يسمح، استخدم Safari للطريقة الأكثر موثوقية.';
+    }
+  }
+
+  document.querySelectorAll('.copyQuick').forEach(b=>b.addEventListener('click',()=>copyText(QUICK)));
+  document.getElementById('copyIOSShortcut')?.addEventListener('click',()=>copyText(IOS_SHORTCUT));
+})();
 </script>
 </body>
 </html>

@@ -1,36 +1,23 @@
-# بحث جهة التدريب — V5.2
+# بحث جهة التدريب — V5.3
 
-يدعم الآن:
-- Desktop
-- Android
-- iPhone / iPad
+## الجديد
+- اكتشاف الجهاز تلقائيًا.
+- اكتشاف المتصفح تلقائيًا قدر الإمكان.
+- تعليمات مخصصة لـ:
+  - Brave
+  - Chrome
+  - Edge
+  - Firefox
+  - Opera
+  - Samsung Internet
+  - Safari
+- دعم Desktop / Android / iPhone / iPad.
+- Apple Shortcuts كخيار احتياطي على iPhone.
 
-## التثبيت حسب الجهاز
-
-### Desktop
-Bookmarklet بالسحب إلى شريط المفضلة.
-
-### Android
-Bookmarklet قصير يتم نسخه إلى رابط Bookmark باسم `بحث التدريب`.
-
-### iPhone / iPad
-طريقتان:
-1. Bookmarklet قصير.
-2. Apple Shortcuts عبر `Run JavaScript on Webpage` في Safari كخيار احتياطي.
-
-## ملفات مهمة
-- `index.html` صفحة التثبيت الذكية
-- `app.js` الأداة الأساسية
-- `bookmarklet.txt` الكود القصير
-- `ios-shortcut.js` كود Apple Shortcuts
-- `standalone-bookmarklet.txt` نسخة مستقلة
-- `assets/iphone-install.svg`
-- `assets/mobile-install.svg`
-- `assets/install.svg`
-- `assets/usage.svg`
+> ملاحظة: اكتشاف المتصفح على iPhone ليس مضمونًا 100% بسبب تقليل معلومات User-Agent وبعض قيود iOS.
 
 ## GitHub Pages
 https://yzeeyd.github.io/training-entity-search/
 
 ## الإصدار
-5.2.0
+5.3.0
