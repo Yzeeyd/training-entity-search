@@ -1,0 +1,46 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="700" viewBox="0 0 1200 700">
+<rect width="1200" height="700" fill="white"/>
+<style>
+.t{font-family:Arial,sans-serif;fill:#111}
+.s{font-family:Arial,sans-serif;fill:#555}
+.phone{fill:#fff;stroke:#111;stroke-width:4}
+.ui{fill:#f5f5f5;stroke:#bbb;stroke-width:2}
+.dark{fill:#111}
+.white{fill:#fff}
+</style>
+<text x="600" y="58" text-anchor="middle" class="t" font-size="34" font-weight="700">تثبيت الأداة على الجوال</text>
+
+<!-- Phone 1 -->
+<rect x="70" y="100" width="300" height="520" rx="34" class="phone"/>
+<rect x="105" y="140" width="230" height="58" rx="14" class="dark"/>
+<text x="220" y="176" text-anchor="middle" class="white" font-family="Arial" font-size="18">نسخ كود الأداة</text>
+<rect x="105" y="225" width="230" height="210" rx="18" class="ui"/>
+<text x="220" y="285" text-anchor="middle" class="t" font-size="24">1</text>
+<text x="220" y="325" text-anchor="middle" class="t" font-size="20">اضغط نسخ الكود</text>
+<text x="220" y="360" text-anchor="middle" class="s" font-size="16">من صفحة GitHub Pages</text>
+
+<!-- Phone 2 -->
+<rect x="450" y="100" width="300" height="520" rx="34" class="phone"/>
+<rect x="485" y="145" width="230" height="52" rx="12" class="ui"/>
+<text x="600" y="178" text-anchor="middle" class="t" font-size="17">بحث جهة التدريب</text>
+<rect x="485" y="225" width="230" height="145" rx="18" class="ui"/>
+<text x="600" y="270" text-anchor="middle" class="t" font-size="24">2</text>
+<text x="600" y="310" text-anchor="middle" class="t" font-size="20">احفظ الصفحة كمفضلة</text>
+<text x="600" y="342" text-anchor="middle" class="s" font-size="15">ثم عدّل رابط المفضلة</text>
+<rect x="485" y="395" width="230" height="95" rx="15" class="dark"/>
+<text x="600" y="435" text-anchor="middle" class="white" font-family="Arial" font-size="17">javascript:...</text>
+<text x="600" y="466" text-anchor="middle" class="white" font-family="Arial" font-size="14">الصق الكود هنا</text>
+
+<!-- Phone 3 -->
+<rect x="830" y="100" width="300" height="520" rx="34" class="phone"/>
+<rect x="865" y="145" width="230" height="52" rx="12" class="ui"/>
+<text x="980" y="178" text-anchor="middle" class="t" font-size="17">بحث التدريب</text>
+<rect x="865" y="225" width="230" height="195" rx="18" class="ui"/>
+<text x="980" y="270" text-anchor="middle" class="t" font-size="24">3</text>
+<text x="980" y="310" text-anchor="middle" class="t" font-size="20">افتح صفحة التدريب</text>
+<text x="980" y="342" text-anchor="middle" class="s" font-size="15">ثم شغّل المفضلة</text>
+<rect x="865" y="455" width="230" height="58" rx="14" class="dark"/>
+<text x="980" y="491" text-anchor="middle" class="white" font-family="Arial" font-size="17">تظهر أداة البحث</text>
+
+<text x="600" y="665" text-anchor="middle" class="s" font-size="17">الرسومات توضيحية وقد تختلف أسماء القوائم قليلًا حسب إصدار Brave أو Chrome.</text>
+</svg>

@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="620" viewBox="0 0 1200 620">
+<rect width="1200" height="620" fill="white"/>
+<rect x="130" y="55" width="940" height="510" rx="28" fill="#fff" stroke="#111" stroke-width="3"/>
+<text x="960" y="105" text-anchor="end" font-family="Arial" font-size="30" font-weight="700" fill="#111">بحث جهة التدريب</text>
+<rect x="180" y="135" width="840" height="68" rx="16" fill="#fafafa" stroke="#111" stroke-width="2"/>
+<text x="980" y="178" text-anchor="end" font-family="Arial" font-size="24" fill="#111">بنك</text>
+<rect x="770" y="225" width="120" height="44" rx="22" fill="#111"/><text x="830" y="254" text-anchor="middle" font-family="Arial" font-size="18" fill="white">بنوك</text>
+<rect x="630" y="225" width="120" height="44" rx="22" fill="#f4f4f4" stroke="#111"/><text x="690" y="254" text-anchor="middle" font-family="Arial" font-size="18" fill="#111">تقنية</text>
+<rect x="490" y="225" width="120" height="44" rx="22" fill="#f4f4f4" stroke="#111"/><text x="550" y="254" text-anchor="middle" font-family="Arial" font-size="18" fill="#111">حكومي</text>
+<rect x="180" y="300" width="840" height="62" rx="14" fill="#fafafa" stroke="#bbb"/>
+<text x="980" y="338" text-anchor="end" font-family="Arial" font-size="21" fill="#111">البنك الأهلي السعودي</text>
+<text x="220" y="338" font-family="Arial" font-size="25" fill="#111">☆</text>
+<rect x="180" y="378" width="840" height="62" rx="14" fill="#111"/>
+<text x="980" y="416" text-anchor="end" font-family="Arial" font-size="21" fill="#fff">بنك البلاد</text>
+<text x="220" y="416" font-family="Arial" font-size="25" fill="#fff">★</text>
+<rect x="180" y="456" width="840" height="62" rx="14" fill="#fafafa" stroke="#bbb"/>
+<text x="980" y="494" text-anchor="end" font-family="Arial" font-size="21" fill="#111">مصرف الإنماء</text>
+<text x="220" y="494" font-family="Arial" font-size="25" fill="#111">☆</text>
+</svg>
